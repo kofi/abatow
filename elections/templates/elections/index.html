@@ -1,0 +1,26 @@
+{% load bootstrap3 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'elections/style.css' %}" />
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+{% if latest_election_list %}
+    <ul>
+    {% for election in latest_election_list %}
+        <li>
+			<a href="{% url 'elections:detail' election.id %}">{{ election.name  }}</a>
+			{# <a href="/elections/{{ election.id }}/">{{ election.name }}</a>  #}
+			for the {{ election.congress.name }} Congress and {{ election.region.name }} region of type 
+			{{ election.electiontype_text }}
+		</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No elections are available.</p>
+{% endif %}

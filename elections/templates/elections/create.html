@@ -1,0 +1,18 @@
+{% load bootstrap3 %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<h1>Add a country</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'elections:create'%}" method="post">
+	{% csrf_token %}
+	<label for="countryname">Name:</label>
+	<input type="text" name="countryname" value="countryname" id="">
+	<label for="total_registered">Total Registered:</label>
+	<input type="text" name="total_registered" value="total_registered" id="">
+<input type="submit" value="Create Country" />
+</form>
+
