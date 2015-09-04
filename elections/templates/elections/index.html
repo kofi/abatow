@@ -1,15 +1,8 @@
-{% load bootstrap3 %}
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+{% extends 'electionsbase.html' %}
 
-{% load staticfiles %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'elections/style.css' %}" />
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
-
+{% block pagetitle %} Elections {% endblock %}
+{% block title %}List of Current Elections{% endblock %}
+{% block primary %}
 {% if latest_election_list %}
     <ul>
     {% for election in latest_election_list %}
@@ -17,10 +10,11 @@
 			<a href="{% url 'elections:detail' election.id %}">{{ election.name  }}</a>
 			{# <a href="/elections/{{ election.id }}/">{{ election.name }}</a>  #}
 			for the {{ election.congress.name }} Congress and {{ election.region.name }} region of type 
-			{{ election.electiontype_text }}
+			{{ election.electiontype_text }} : {{ election.total_votes }}
 		</li>
     {% endfor %}
     </ul>
 {% else %}
     <p>No elections are available.</p>
 {% endif %}
+{% endblock primary %}

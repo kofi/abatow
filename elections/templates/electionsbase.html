@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+	<head>
+
+		<title>My Site - {%block pagetitle %}{% endblock %}</title>
+
+	</head>
+	
+	{% load bootstrap3 %}
+	{# Load CSS and JavaScript #}
+	{% bootstrap_css %}
+	{% bootstrap_javascript %}
+	{% load staticfiles %}
+	{# Display django.contrib.messages as Bootstrap alerts #}
+	{% bootstrap_messages %}
+	<link rel="stylesheet" type="text/css" href="{% static 'elections/style.css' %}" />
+	
+	<body>
+
+			<div id="header">My Site</div>
+
+			<div id="nav">
+
+				<ul>
+
+					<li><a href="/">home</a></li>
+
+
+
+					<li><a href="/elections">Elections</a></li>
+
+					{# <li><a href="{% url 'candidates' %}">Links</a></li> #}
+					{#  #}
+					{# <li><a href="/about/">About</a></li> #}
+
+
+
+				</ul>
+
+			</div>
+
+			<div id="content">
+
+				<div id="primary">
+
+					<h1>{% block title %}{% endblock %}</h1>
+
+
+
+					{% block primary %}{% endblock %}
+
+				</div>
+
+				<div id="secondary">
+
+					<h3>Recent Entries:</h3>
+
+				<div>
+
+
+
+			</div>
+
+		</body>
+	
+
+</html>

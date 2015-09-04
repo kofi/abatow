@@ -1,14 +1,9 @@
-{% load bootstrap3 %}
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
+{% extends 'electionsbase.html' %}
 
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
 
-<h1 id="">
-		Election : {{ election.id }}, Name : {{ election.name }}
-</h1>
+{% block pagetitle %} Election Results {% endblock %}
+{% block title %}Results for {{ election.name }} {% endblock %}
+{% block primary %}
 <ul>
 	{% for result in election.result_set.all %}
 		<li>
@@ -17,3 +12,4 @@
 	{% endfor %}
 </ul>
 Total votes : {{ election.total_votes.total_votes}}
+{% endblock primary %}

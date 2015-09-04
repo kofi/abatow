@@ -1,6 +1,7 @@
 from django.db import models
 # https://docs.djangoproject.com/en/1.8/topics/db/aggregation/
 from django.db.models import Sum
+import numpy as np
 import datetime
 import uuid
 
@@ -89,7 +90,17 @@ class Election(models.Model):
         return self.name
     def _get_total_votes(self):
         """docstring for _get_total_votes"""
-        return self.result_set.all().aggregate(total_votes=Sum('votes'))
+        #all_votes = self.result_set.all().aggregate(total_votes=Sum('votes'))
+        all_votes = list(map(lambda x: x.votes, self.result_set.all()))
+        total = int(np.sum(all_votes))
+        print(total)
+        print(list(all_votes))
+        #print(int(np.sum(list(all_votes))))
+        return total
+    def get_result_fraction(self, election_id):
+        vote = self.result_set.get(id=election_id)
+        return u'%.2f%%' % (vote / self.total_votes)
+        
     NATIONAL = 'NAT'
     REGIONAL = 'REG'
     CONSTITUENCY = 'CON'
@@ -192,11 +203,13 @@ class Result(models.Model):
     def _get_party(self):
         return self.candidate.party.name
     def _get_vote_fraction(self):
-        myvotes = self.votes 
-        allvotes= self.election.total_votes['total_votes']
-        print(myvotes)
-        print(allvotes)
-        return float(myvotes/allvotes)*100
+        my_fraction = self.votes/self.election.total_votes
+        return my_fraction*100
+        # myvotes = self.votes
+        # allvotes= self.election.total_votes['total_votes']
+        # print(myvotes)
+        # print(allvotes)
+        # return float(myvotes/allvotes)*100
     def vote_percentage(self):
         return u'%.2f%%' % (self.vote_fraction)
         
