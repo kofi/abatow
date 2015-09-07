@@ -1,15 +1,61 @@
 {% extends 'electionsbase.html' %}
 
-
 {% block pagetitle %} Election Results {% endblock %}
 {% block title %}Results for {{ election.name }} {% endblock %}
 {% block primary %}
-<ul>
-	{% for result in election.result_set.all %}
-		<li>
-			{{result.candidate.fullname }} : {{result.votes }} votes : {{result.vote_percentage}}
-		</li>
-	{% endfor %}
-</ul>
-Total votes : {{ election.total_votes.total_votes}}
+
+<div class="row">
+	<div class="col-lg-12">
+	<ul>
+		{% for result in election.result_set.all %}
+			<li>
+				{{result.candidate.fullname }} : {{result.votes }} votes : {{result.vote_percentage}}
+			</li>
+		{% endfor %}
+	</ul>
+	Total votes : {{ election.total_votes}}
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+        <canvas id="myChart" width="500" height="400"></canvas>
+		
+	</div>
+</div>
+{# <script src="{% static 'elections/js/Chart.min.js' %}"></script> #}
+
+{% load static %}
+<script type="text/javascript" src="{% static 'elections/js/Chart.min.js' %}"></script>
+<script type="text/javascript">
+    $.get('{% url "elections:detail_json" election.id %}', function(data) {
+		//alert( Object.keys(data));
+		var election_labels = Object.keys(data);
+		var election_values = [];
+		var values = Object.keys(data).map(function(key){
+		    election_values.push(data[key]);
+		});
+		//alert(election_values);
+		var randomColorGenerator = function () { 
+		    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
+		};
+			
+		// http://stackoverflow.com/questions/25594478/different-color-for-each-bar-in-a-bar-chart-chartjs
+        var electionData = {
+            labels : election_labels, //["January","February","March","April","May","June"], //Object.keys(data);
+            datasets : [
+	            {
+	                fillColor : randomColorGenerator(), //"rgba(172,194,132,0.4)",
+	                strokeColor : "#ACC26D",
+	                pointColor : "#fff",
+	                pointStrokeColor : "#9DB86D",
+	                data : election_values //[203,156,99,251,305,247]
+	            }
+        	]
+        }
+		
+        //var ctx = $("#myChart").get(0).getContext("2d");
+		var ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx).Bar(electionData);
+    });
+</script>
 {% endblock primary %}

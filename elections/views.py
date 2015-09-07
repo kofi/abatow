@@ -3,8 +3,14 @@ from django.http import HttpResponse #, Http404
 #from django.template import RequestContext, loader
 from django.core.urlresolvers import reverse
 from django.views import generic
+from django.core import serializers
 
 from .models import Election, Result, Country
+
+from jsonview.decorators import json_view
+from django.http import JsonResponse
+import json
+
 
 # Create your views here.
 class IndexView(generic.ListView):
@@ -14,7 +20,6 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """Return the last five elections."""
         return Election.objects.order_by("-updated_at")[:5]
-
 
 class DetailView(generic.DetailView):
     model = Election
@@ -67,4 +72,21 @@ def create(request):
     #         'error_message': "You didn't add a name for the country "
     #     })
     #results = election.get()
-    
+
+@json_view
+def detail_json(request, election_id):
+    """docstring for detail_json"""
+    election = get_object_or_404(Election, pk=election_id)
+    #response =JsonResponse(election.result_set.all(),safe=False)
+    #return response.content
+    #return election.result_set.all()
+    results = {}
+    for er in election.result_set.all():
+         results[er.candidate.fullname] = er.votes
+    return results
+    # return json.dumps(results)
+    # response = JsonResponse(results)
+    # return response.content
+    #return JsonResponse(election.result_set.all().values(), safe=False)
+    #data = serializers.serialize("json", election.result_set.all())
+    #return HttpResponse(data, content_type='application/json')

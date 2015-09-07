@@ -1,69 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
 	<head>
-
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+		{% load bootstrap3 %}
+		{# Load CSS and JavaScript #}
+		{% bootstrap_css %}
+		{% bootstrap_javascript jquery=1 %}
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static 'elections/css/style.css' %}" />
 		<title>My Site - {%block pagetitle %}{% endblock %}</title>
 
 	</head>
 	
-	{% load bootstrap3 %}
-	{# Load CSS and JavaScript #}
-	{% bootstrap_css %}
-	{% bootstrap_javascript %}
-	{% load staticfiles %}
 	{# Display django.contrib.messages as Bootstrap alerts #}
 	{% bootstrap_messages %}
-	<link rel="stylesheet" type="text/css" href="{% static 'elections/style.css' %}" />
 	
 	<body>
-
-			<div id="header">My Site</div>
-
-			<div id="nav">
-
-				<ul>
-
-					<li><a href="/">home</a></li>
-
-
-
+		<div class="container-fluid">	
+			<nav id="nav" class="navbar navbar-inverse">
+			  	<div class="container-fluid">
+			    	<div class="navbar-header">
+			      	  <a class="navbar-brand" href="#">abatow</a>
+			    	</div>
+			    <div>
+			    <ul class="nav navbar-nav">
+			        <li class="active"><a href="/">Home</a></li>
 					<li><a href="/elections">Elections</a></li>
-
 					{# <li><a href="{% url 'candidates' %}">Links</a></li> #}
 					{#  #}
 					{# <li><a href="/about/">About</a></li> #}
-
-
-
-				</ul>
-
-			</div>
+			    </ul>
+			</nav>
 
 			<div id="content">
-
-				<div id="primary">
-
+				<div id="primary" class="container-fluid">
 					<h1>{% block title %}{% endblock %}</h1>
-
-
-
 					{% block primary %}{% endblock %}
 
 				</div>
 
-				<div id="secondary">
-
+				<div id="secondary" class="container-fluid">
 					<h3>Recent Entries:</h3>
-
 				<div>
-
-
-
 			</div>
-
-		</body>
+		</div><!-- close container-fluid -->
+	</body>
 	
 
 </html>
